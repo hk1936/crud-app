@@ -7,7 +7,7 @@ Some description or other info about what the app does.
 Download the source code:
 
 ```shell
-git clone remote_clone_address_of_your_repo_here
+git clone https://github.com/hk1936/crud-app/app/products_app.py
 cd some/path/to/repo/
 ```
 
