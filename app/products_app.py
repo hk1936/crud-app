@@ -1,6 +1,12 @@
 import os
 import csv
+
+products =[] #create new lists
 csv_file_path = "/users/kawanishihajime/desktop/crud-app/data/products.csv"
+with open(csv_file_path, "r") as csv_file:
+    reader = csv.DictReader(csv_file)
+    for row in reader:
+        products.append(row)
 
 print("----------------------------")
 print("Products Application")
@@ -9,21 +15,23 @@ print("Hello "+os.getlogin())
 menu = """
 Welcome to the product app!
 
-There are 100 products.
+There are {0} products.
 
 Please choose an operation from:'List', 'Show', 'Create', 'Update', 'Destroy'
 
 When you are DONE, type in DONE!
-"""
+""".format(len(products))
+
 print (menu)
 
 
 def list_products():
     with open(csv_file_path, "r") as csv_file:
         reader = csv.DictReader(csv_file)
-        print ("There are 20 products: \n") # assuming your CSV has headers, otherwise... csv.reader(csv_file)
-        for column in reader:
-            print(column["id"],column["name"],column["aisle"],column["department"], column["price"])
+        for row in reader:
+            print(row["id"],row["name"],row["aisle"],row["department"], row["price"])
+
+
 
 def show_product():
     print("Showing a product")
