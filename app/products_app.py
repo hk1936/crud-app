@@ -8,16 +8,6 @@ with open(csv_file_path, "r") as csv_file:
     for row in reader:
         products.append(row)
 
-
-other_path = "/users/kawanishihajime/desktop/crud-app/data/other_products.csv"
-with open(other_path, "w") as csv_file:
-    writer = csv.DictWriter(csv_file, fieldnames=["id", "name", "aisle","department","price"])
-    writer.writeheader() # uses fieldnames set above
-    for product in products:
-        writer.writerow(product)
-
-
-
 print("----------------------------")
 print("Products Application")
 print("----------------------------")
@@ -29,11 +19,13 @@ There are {0} products.
 
 Please choose an operation from:'List', 'Show', 'Create', 'Update', 'Destroy'
 
-When you are DONE, type in DONE!
+When you are done, type in 'DONE'!
 """.format(len(products)) #string interporation
 
 print (menu)
 
+
+#created 6 fo
 def list_products():
     with open(csv_file_path, "r") as csv_file:
         reader = csv.DictReader(csv_file)
@@ -56,6 +48,7 @@ def create_product():
     product_aisle = input("aisle: ")
     product_department = input("department: ")
     product_price = input("price: ")
+        
     new_product = {
         "id":len(products)+1,
     	"name": product_name,
@@ -83,9 +76,10 @@ def update_product():
         "department":update_department,
         "price":update_price
         }
-        print("We will update from ",product," to ",updated_product )
+        print("We will update from ",dict(product)," to ",dict(updated_product) )
         confirmation = input("Please type Y if its okay to update: ")
-        if confirmation == "Y".title():
+        confirmation = confirmation.capitalize()
+        if confirmation == "Y":
             product["name"] = update_name
             product["aisle"]= update_aisle
             product["department"]=update_department
@@ -96,6 +90,7 @@ def update_product():
     else:
         print("Not a valid ID, please try again")
 
+
 def destroy_product():
     print("Ok, we will destroy a product")
     destroy_product = input("Please specify the product's identifier: ")
@@ -104,7 +99,13 @@ def destroy_product():
         product = product[0]
         print("I am destroying product...: ")
         print(dict(product))
-        del products[products.index(product)]
+        confirmation = input("Please type Y if its okay to destroy: ")
+        confirmation = confirmation.capitalize()
+        if confirmation == "Y":
+            del products[products.index(product)]
+            print("Updated product")
+        else:
+            print("Try again")
 
     else:
         print("Sorry, I cannot find your identifier: ", destroy_product)
@@ -116,8 +117,7 @@ def csv_update():
         for product in products:
             writer.writerow(product)
 
-
-
+# while loop until user enters DONE.
 while True:
     chosen_operation = input("Enter operation here, when you are done, type in 'DONE': ")
     chosen_operation = chosen_operation.title()
