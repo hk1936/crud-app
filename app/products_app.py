@@ -43,13 +43,12 @@ def list_products():
 def show_product():
     product_id = input("Please specify product IDs: ")
     product=[i for i in products if i["id"] == product_id]
-    product= product[0]
 
     if int(product_id) <= int(len(products)):
-        print("Ok, this is what you chose:", "Product name: ",product["name"],"Product aisle: ",product["aisle"],"Product department: ",product["department"],"Product price: ",product["price"])
+        product = product[0]
+        print("Ok, this is what you chose... \n'Product name': ",product["name"],"\n'Product aisle': ",product["aisle"],"\n'Product department': ",product["department"],"\n'Product price': ",product["price"])
     else:
         print("Couldn't find your identifier. Please try again")
-        show_product()
 
 def create_product():
     print("Ok, Please specify the product information....")
@@ -66,12 +65,12 @@ def create_product():
     }
     print ("New product is", new_product)
     products.append(new_product)
-    print(products)
 
-def product():
+
+def update_product():
     update_id = input("Ok, Please specify the product information. What is the product idenfitier?: ")
-    product = [p for p in products if p["id"]==update_id]
-    if len(product)>0:
+    product = [i for i in products if i["id"]==update_id]
+    if product:
         product = product[0]
         print("Please enter information..")
         update_name = input("Name is "+ product["name"]+ ". How should we change name to?: ")
@@ -97,10 +96,18 @@ def product():
     else:
         print("Not a valid ID, please try again")
 
-
-
 def destroy_product():
-    print("Destroying a product")
+    print("Ok, we will destroy a product")
+    destroy_product = input("Please specify the product's identifier: ")
+    product = [i for i in products if i["id"] == destroy_product]
+    if product:
+        product = product[0]
+        print("I am destroying product...: ")
+        print(dict(product))
+        del products[products.index(product)]
+
+    else:
+        print("Sorry, I cannot find your identifier: ", destroy_product)
 
 def csv_update():
     with open(csv_file_path, "w") as csv_file:
@@ -112,9 +119,9 @@ def csv_update():
 
 
 while True:
-    chosen_operation = input("Enter operation here: ")
+    chosen_operation = input("Enter operation here, when you are done, type in 'DONE': ")
     chosen_operation = chosen_operation.title()
-    print ("You chose...."+chosen_operation)
+    print ("You chose....: "+chosen_operation)
 
     if chosen_operation == "List": #.title() if list is small letter, it will still capture
         list_products()
@@ -128,6 +135,7 @@ while True:
         csv_update()
     elif chosen_operation == "Destroy":
         destroy_product()
+        csv_update()
     elif chosen_operation.title() == "Done":
         print ("Good bye!")
         break
